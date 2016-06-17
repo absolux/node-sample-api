@@ -1,0 +1,16 @@
+{
+  "name": "node-sample-api",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "mysql": "^2.11.1",
+    "vitamin": "^0.7.2"
+  }
+}
