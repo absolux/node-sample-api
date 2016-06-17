@@ -5,6 +5,7 @@ var app = module.exports = require('express')()
 
 // configuration
 require('dotenv').load()
+require('./config/database')
 
 // middlewares
 app.use(bodyParser.json())
