@@ -13,7 +13,9 @@ var Tag = module.exports = require('vitamin').extend({
 
 // update the slug on saving
 Tag.on('saving', function (tag) {
-  var name = this.get('name', "")
+  var name = tag.get('name')
   
-  this.set('slug', name.replace(' ', '-').toLowerCase())
+  if (! name ) throw new Error("Tag name is required")
+  
+  tag.set('slug', name.trim().replace(/\s/g, '-').toLowerCase())
 })
