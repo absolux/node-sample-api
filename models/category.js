@@ -12,8 +12,10 @@ var Category = module.exports = require('vitamin').extend({
 })
 
 // update the slug on saving
-Category.on('saving', function (tag) {
-  var name = this.get('name', "")
+Category.on('saving', function (categ) {
+  var name = categ.get('name')
   
-  this.set('slug', name.replace(' ', '-').toLowerCase())
+  if (! name ) throw new Error("Category name is required")
+  
+  categ.set('slug', name.trim().replace(/\s/g, '-').toLowerCase())
 })

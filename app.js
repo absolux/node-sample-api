@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // routes
-app.use('api', require('./routes'))
+app.use('/api', require('./routes'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -24,8 +24,8 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   res.status(err.status || 500)
-  res.json({ 
-    error: true,
+  res.json({
+    success: false,
     data: {
       code: err.status,
       message: err.message

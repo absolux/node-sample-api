@@ -1,10 +1,7 @@
 
-var express = require('express')
-var router = express.Router()
+var router = require('express').Router()
 
 /* GET */
-router.get('', function(req, res, next) {
-  res.json({})
-})
+router.use('/categories', require('./api/categories'))
 
 module.exports = router

@@ -4,7 +4,7 @@ module.exports = {
 
   development: {
     client: 'mysql',
-    debug: true,
+    debug: false,
     connection: process.env.DATABASE_URL || {
       host     : process.env.DB_HOST,
       database : process.env.DB_DATABASE,
