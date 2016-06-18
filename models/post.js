@@ -1,5 +1,6 @@
 
 var Sluggable = require('../plugins/sluggable')
+var Timestamps = require('../plugins/timestamps')
 
 var Post = module.exports = require('vitamin').extend({
   
@@ -20,13 +21,5 @@ var Post = module.exports = require('vitamin').extend({
 // use the sluggable plugin
 Post.use(new Sluggable(), 'title', 'slug')
 
-// update timestamp on creation
-Post.on('creating', function (post) {
-  post.set('created_at', new Date)
-  post.set('updated_at', new Date)
-})
-
-// update timestamp on update
-Post.on('updating', function (post) {
-  post.set('updated_at', new Date)
-})
+// use the timestamps plugin
+Post.use(new Timestamps())
