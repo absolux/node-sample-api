@@ -1,4 +1,6 @@
 
+var Sluggable = require('../plugins/sluggable')
+
 var Tag = module.exports = require('vitamin').extend({
   
   $table: 'tags',
@@ -11,11 +13,5 @@ var Tag = module.exports = require('vitamin').extend({
   
 })
 
-// update the slug on saving
-Tag.on('saving', function (tag) {
-  var name = tag.get('name')
-  
-  if (! name ) throw new Error("Tag name is required")
-  
-  tag.set('slug', name.trim().replace(/\s/g, '-').toLowerCase())
-})
+// use the sluggable plugin
+Tag.use(new Sluggable(), 'name', 'slug')

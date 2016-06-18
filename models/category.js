@@ -1,4 +1,6 @@
 
+var Sluggable = require('../plugins/sluggable')
+
 var Category = module.exports = require('vitamin').extend({
   
   $table: 'categories',
@@ -11,11 +13,5 @@ var Category = module.exports = require('vitamin').extend({
   
 })
 
-// update the slug on saving
-Category.on('saving', function (categ) {
-  var name = categ.get('name')
-  
-  if (! name ) throw new Error("Category name is required")
-  
-  categ.set('slug', name.trim().replace(/\s/g, '-').toLowerCase())
-})
+// use the sluggable plugin
+Category.use(new Sluggable(), 'name', 'slug')

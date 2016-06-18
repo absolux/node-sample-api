@@ -1,4 +1,6 @@
 
+var Sluggable = require('../plugins/sluggable')
+
 var Post = module.exports = require('vitamin').extend({
   
   $table: 'posts',
@@ -14,6 +16,9 @@ var Post = module.exports = require('vitamin').extend({
   }
   
 })
+
+// use the sluggable plugin
+Post.use(new Sluggable(), 'title', 'slug')
 
 // update timestamp on creation
 Post.on('creating', function (post) {
