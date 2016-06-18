@@ -6,10 +6,10 @@ var Post = module.exports = require('vitamin').extend({
   
   $table: 'posts',
   
-  $fillable: [ 'title', 'content' ],
+  $fillable: [ 'title', 'content', 'category_id' ],
   
   category: function () {
-    return this.belongsTo(require('./category', 'category_id'))
+    return this.belongsTo(require('./category'), 'category_id')
   },
   
   tags: function () {
@@ -23,3 +23,8 @@ Post.use(new Sluggable(), 'title', 'slug')
 
 // use the timestamps plugin
 Post.use(new Timestamps())
+
+// detach all tags when deleting a post
+Post.on('deleted', function (model) {
+  return model.tags().detach()
+})

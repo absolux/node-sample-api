@@ -15,3 +15,8 @@ var Tag = module.exports = require('vitamin').extend({
 
 // use the sluggable plugin
 Tag.use(new Sluggable(), 'name', 'slug')
+
+// detach all posts when deleting a tag
+Tag.on('deleted', function (model) {
+  return model.posts().detach()
+})
