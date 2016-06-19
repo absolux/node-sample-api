@@ -1,10 +1,11 @@
 
-var Promise = require('bluebird')
-var _       = require('underscore')
-var Tag     = require('../models/tag')
-var Post    = require('../models/post')
-var router  = require('express').Router()
-var debug   = require('debug')('api:posts')
+var Promise   = require('bluebird')
+var _         = require('underscore')
+var Tag       = require('../models/tag')
+var Post      = require('../models/post')
+var router    = require('express').Router()
+var debug     = require('debug')('api:posts')
+var Category  = require('../models/category')
 
 router
   .route('/')
@@ -14,7 +15,7 @@ router
     Post
       .populate('category', 'tags')
       .fetchAll(function (error, collection) {
-        if ( error ) next(error)
+        if ( error ) return next(error)
         
         res.json({ success: true, data: collection })
       })
@@ -58,7 +59,7 @@ router
       .where('id', req.params.id)
       .populate('tags', 'category')
       .fetch(function (error, post) {
-        if ( error ) next(error)
+        if ( error ) return next(error)
         
         debug("Retrieved post: " + post.get('title'))
         res.json({ success: true, data: post })
@@ -92,6 +93,34 @@ router
       debug("Post deleted: " + post.get('title'))
       res.json({ success: true, data: post })
     })
+    
+  })
+
+router
+  .get('/category/:slug', function (req, res, next) {
+    
+    debug("fetch posts by category")
+    Category
+      .populate({ posts: ['tags'] })
+      .where('slug', req.params.slug)
+      .fetch(function (error, tag) {
+        if ( error ) return next(error)
+        
+        res.json({ success: true, data: tag })
+      })
+    
+  })
+  .get('/tag/:slug', function (req, res, next) {
+    
+    debug("fetch posts by tag")
+    Tag
+      .populate({ posts: ['category'] })
+      .where('slug', req.params.slug)
+      .fetch(function (error, tag) {
+        if ( error ) return next(error)
+        
+        res.json({ success: true, data: tag })
+      })
     
   })
 
