@@ -1,5 +1,8 @@
 
-var Post     = require('../models/post')
+var Promise = require('bluebird')
+var _       = require('underscore')
+var Tag     = require('../models/tag')
+var Post    = require('../models/post')
 var router  = require('express').Router()
 var debug   = require('debug')('api:posts')
 
@@ -22,7 +25,22 @@ router
     debug("creating a post " + req.body.title)
     Post
       .create(req.body)
-      
+      .tap(function attachTags(post) {
+        var tags = String(req.body.tags).split(',')
+        
+        return Promise
+          .map(tags, function (value) {
+            return Tag.firstOrCreate({ 'name': value.trim() })
+          })
+          .then(function (tags) {
+            // get tag ids 
+            var ids = _.map(tags, function (t) {
+              return t.getId()
+            })
+            
+            return post.tags().attach(ids)
+          })
+      })
       .catch(next)
       .then(function (post) {
         debug("Post created: " + post.get('title'))
@@ -51,15 +69,15 @@ router
     
     debug("Update the post " + req.params.id)
     Post.find(req.params.id)
-    .then(function (post) {
-      return post.update(req.body)
-    })
-    
-    .catch(next)
-    .then(function (post) {
-      debug("Post updated: " + post.get('title'))
-      res.json({ success: true, data: post })
-    })
+      .then(function (post) {
+        return post.update(req.body)
+      })
+      // TODO sync tags
+      .catch(next)
+      .then(function (post) {
+        debug("Post updated: " + post.get('title'))
+        res.json({ success: true, data: post })
+      })
     
   })
   .delete(function (req, res, next) {
