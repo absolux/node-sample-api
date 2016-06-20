@@ -103,7 +103,7 @@ router
     Category
       .populate({ posts: ['tags'] })
       .where('slug', req.params.slug)
-      .fetch(function (error, tag) {
+      .fetchAll(function (error, tag) {
         if ( error ) return next(error)
         
         res.json({ success: true, data: tag })
@@ -116,7 +116,7 @@ router
     Tag
       .populate({ posts: ['category'] })
       .where('slug', req.params.slug)
-      .fetch(function (error, tag) {
+      .fetchAll(function (error, tag) {
         if ( error ) return next(error)
         
         res.json({ success: true, data: tag })

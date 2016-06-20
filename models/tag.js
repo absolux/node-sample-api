@@ -28,12 +28,12 @@ Tag.on('deleted', function (model) {
  * @param {Object} attrs
  * @return Promise 
  */
-Tag.firstOrCreate = function (attrs) {
-  return new Promise(function (resolve, reject) {
-    Tag.where(attrs).fetch(function (err, res) {
-      if (! err ) return resolve(res)
+// Tag.firstOrCreate = function (attrs) {
+//   return new Promise(function (resolve, reject) {
+//     Tag.where(attrs).fetch(function (err, res) {
+//       if (! err ) return resolve(res)
       
-      Tag.create(attrs).then(resolve).catch(reject)
-    })
-  })
-}
+//       Tag.create(attrs).then(resolve).catch(reject)
+//     })
+//   })
+// }
