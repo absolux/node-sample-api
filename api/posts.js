@@ -34,12 +34,7 @@ router
             return Tag.firstOrCreate({ 'name': value.trim() })
           })
           .then(function (tags) {
-            // get tag ids 
-            var ids = _.map(tags, function (t) {
-              return t.getId()
-            })
-            
-            return post.tags().attach(ids)
+            return post.tags().attach(tags)
           })
       })
       .catch(next)
@@ -73,7 +68,17 @@ router
       .then(function (post) {
         return post.update(req.body)
       })
-      // TODO sync tags
+      .tap(function (post) {
+        var newTags = String(req.body.tags).split(',')
+        
+        return Promise
+          .map(newTags, function(value) {
+            return Tag.firstOrCreate({ 'name': value.trim() })
+          })
+          .then(function (tags) {
+            return post.tags().sync(tags)
+          })
+      })
       .catch(next)
       .then(function (post) {
         debug("Post updated: " + post.get('title'))
