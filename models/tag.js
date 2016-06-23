@@ -21,19 +21,3 @@ Tag.use(new Sluggable(), 'name', 'slug')
 Tag.on('deleted', function (model) {
   return model.posts().detach()
 })
-
-/**
- * Load an existing tag or create a new one
- * 
- * @param {Object} attrs
- * @return Promise 
- */
-// Tag.firstOrCreate = function (attrs) {
-//   return new Promise(function (resolve, reject) {
-//     Tag.where(attrs).fetch(function (err, res) {
-//       if (! err ) return resolve(res)
-      
-//       Tag.create(attrs).then(resolve).catch(reject)
-//     })
-//   })
-// }

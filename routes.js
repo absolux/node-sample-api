@@ -2,8 +2,8 @@
 var router = require('express').Router()
 
 /* GET */
-router.use('/categories', require('./api/categories'))
-router.use('/posts', require('./api/posts'))
-router.use('/tags', require('./api/tags'))
+router.use('/categories', require('./controllers/categories'))
+router.use('/posts', require('./controllers/posts'))
+router.use('/tags', require('./controllers/tags'))
 
 module.exports = router
