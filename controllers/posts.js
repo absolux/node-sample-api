@@ -27,6 +27,8 @@ router
     Post
       .create(req.body)
       .tap(function attachTags(post) {
+        if (! req.body.tags ) return
+        
         var tags = String(req.body.tags).split(',')
         
         return Promise
@@ -68,7 +70,9 @@ router
       .then(function (post) {
         return post.update(req.body)
       })
-      .tap(function (post) {
+      .tap(function syncTags(post) {
+        if (! req.body.tags ) return
+        
         var newTags = String(req.body.tags).split(',')
         
         return Promise
